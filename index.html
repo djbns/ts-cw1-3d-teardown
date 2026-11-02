@@ -2765,13 +2765,13 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     add(g, box(0.8, 0.8, 0.16, MAT.gold), 29.2, 18, -1.18);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 20, -0.55);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 15, -0.55);
-    // 屏幕右侧 1×9P 排针（2.0mm 间距，插入 U3 矮排母）
+    // 屏幕右侧 1×9P 排针（2.0mm 间距，0.5mm 方针，插入 U3 矮排母）
     var screenHeader = new THREE.Group();
     add(screenHeader, box(2.0, 17.6, 2.0, MAT.black), 0, 0, -1.0);
     for (var shi = 0; shi < 9; shi++) {
-      add(screenHeader, box(1.05, 1.05, 3.4, MAT.gold), 0, (shi - 4) * 2.0, -2.9);
+      add(screenHeader, box(0.5, 0.5, 3.6, MAT.gold), 0, (shi - 4) * 2.0, -3.0);
     }
-    screenHeader.position.set(40.55, 0.68, 0);
+    screenHeader.position.set(40.55, 0.98, 0);
     g.add(screenHeader);
     register('screen', g, PARTS_META.screen);
   })();
