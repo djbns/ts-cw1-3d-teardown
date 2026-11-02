@@ -1263,7 +1263,7 @@ body.no-story-webgl .story-hint,body.no-story-webgl .story-tag,body.no-story-web
       </div>
       <div class="side-card reveal">
         <div class="tag">INTERFACE / 板载接口</div>
-        <p><span class="chip">U1 / U2 · 2×15P</span> <span class="chip">U3 · 9P / 2.0mm</span> <span class="chip">H1 · 5P</span> <span class="chip">H2 · 4P</span> <span class="chip">H8 · 2P</span></p>
+        <p><span class="chip">U1 / U2 · 2×15P</span> <span class="chip">U3 · 9P / 2.54mm</span> <span class="chip">H1 · 5P</span> <span class="chip">H2 · 4P</span> <span class="chip">H8 · 2P</span></p>
         <p style="margin-top:10px">所有模块可插拔，只有 IP2312 采用平贴焊。屏座在屏右侧，GPS 与传感器座在板顶，接线方向均已在丝印上标注。</p>
       </div>
     </div>
@@ -1547,7 +1547,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     screen: {
       no: '02', name: 'ST7789 显示屏', short: '2.8" TFT', tag: 'DISPLAY',
       spec: '320 × 240 · SPI · 2.8 inch',
-      desc: '2.8 英寸 TFT 屏横放在正面下半区，9P 矮排母（2.0mm）在屏幕右侧。固件只刷新变化的行，减少闪烁，并保留整屏翻页刷新。',
+      desc: '2.8 英寸 TFT 屏横放在正面下半区，9P 矮排母（2.54mm）在屏幕右侧。固件只刷新变化的行，减少闪烁，并保留整屏翻页刷新。',
       kv: [['分辨率', '320×240'], ['接口', 'SPI'], ['尺寸', '81.3×54.7'], ['背光', '3V3 常亮']],
       label: { dx: 168, dy: 18 }, anchorZ: 6.5, ez: 92, ex: 0, ey: 0, side: 'front'
     },
@@ -2733,9 +2733,9 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   }
 
   (function () {
-    // U3 为 PM200V 系列矮排母：9P / 2.0mm 间距 / 高 4.3mm
+    // U3 为 PM200V 系列矮排母：9P / 2.54mm 间距 / 高 4.3mm
     // 真实板体载入时屏幕底面落在 4.3 + 2.0 针座 = 6.3mm 处
-    // 板坐标 Y：0 = 板顶边缘，132 = 板底边缘，数值越大越往下；U3 排母中心在 52.37
+    // 板坐标 Y：0 = 板顶边缘，132 = 板底边缘，数值越大越往下；屏幕中心 52.4 时排针正对 U3
     var SCREEN_Y = 52.4;
     var g = makeGroup(78.35, SCREEN_Y, BT / 2 + (HAS_REAL_BOARD ? 6.3 : 10.8));
     add(g, box(81.3, 54.7, 1.2, MAT.pcbDark), 0, 0, 0.6);
@@ -2774,13 +2774,14 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     add(g, box(0.8, 0.8, 0.16, MAT.gold), 29.2, 18, -1.18);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 20, -0.55);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 15, -0.55);
-    // 屏幕右侧 1×9P 排针（2.0mm 间距，0.5mm 方针，插入 U3 矮排母）
+    // 屏幕右侧 1×9P 排针（2.54mm 间距，0.64mm 方针，插入 U3 矮排母）
+    // 底板 U3 排母实测中心：(119.0, 52.37)，9 孔 2.54mm 间距，总长 22.86mm
     var screenHeader = new THREE.Group();
-    add(screenHeader, box(2.0, 17.6, 2.0, MAT.black), 0, 0, -1.0);
+    add(screenHeader, box(2.54, 22.86, 2.0, MAT.black), 0, 0, -1.0);
     for (var shi = 0; shi < 9; shi++) {
-      add(screenHeader, box(0.5, 0.5, 3.6, MAT.gold), 0, (shi - 4) * 2.0, -3.0);
+      add(screenHeader, box(0.64, 0.64, 3.6, MAT.gold), 0, (shi - 4) * 2.54, -3.0);
     }
-    screenHeader.position.set(40.55, 0.02, 0);
+    screenHeader.position.set(40.65, 0.03, 0);
     g.add(screenHeader);
     register('screen', g, PARTS_META.screen);
     // 调试：?debug=1 时出现 SCREEN Y 滑杆，直接以板坐标毫米拖动屏幕
