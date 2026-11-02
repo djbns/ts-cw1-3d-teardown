@@ -1256,7 +1256,7 @@ body.no-story-webgl .story-hint,body.no-story-webgl .story-tag,body.no-story-web
       </div>
       <div class="side-card reveal">
         <div class="tag">INTERFACE / 板载接口</div>
-        <p><span class="chip">U1 / U2 · 2×15P</span> <span class="chip">U3 · 8P / 2.0mm</span> <span class="chip">H1 · 5P</span> <span class="chip">H2 · 4P</span> <span class="chip">H8 · 2P</span></p>
+        <p><span class="chip">U1 / U2 · 2×15P</span> <span class="chip">U3 · 9P / 2.0mm</span> <span class="chip">H1 · 5P</span> <span class="chip">H2 · 4P</span> <span class="chip">H8 · 2P</span></p>
         <p style="margin-top:10px">所有模块可插拔，只有 IP2312 采用平贴焊。屏座在屏右侧，GPS 与传感器座在板顶，接线方向均已在丝印上标注。</p>
       </div>
     </div>
@@ -1540,7 +1540,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     screen: {
       no: '02', name: 'ST7789 显示屏', short: '2.8" TFT', tag: 'DISPLAY',
       spec: '320 × 240 · SPI · 2.8 inch',
-      desc: '2.8 英寸 TFT 屏横放在正面下半区，8P 矮排母（2.0mm）在屏幕右侧。固件只刷新变化的行，减少闪烁，并保留整屏翻页刷新。',
+      desc: '2.8 英寸 TFT 屏横放在正面下半区，9P 矮排母（2.0mm）在屏幕右侧。固件只刷新变化的行，减少闪烁，并保留整屏翻页刷新。',
       kv: [['分辨率', '320×240'], ['接口', 'SPI'], ['尺寸', '81.3×54.7'], ['背光', '3V3 常亮']],
       label: { dx: 168, dy: 18 }, anchorZ: 6.5, ez: 92, ex: 14, ey: 0, side: 'front'
     },
@@ -2726,7 +2726,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   }
 
   (function () {
-    // U3 为 PM200V 系列矮排母：8P / 2.0mm 间距 / 高 4.3mm
+    // U3 为 PM200V 系列矮排母：9P / 2.0mm 间距 / 高 4.3mm
     // 真实板体载入时屏幕底面落在 4.3 + 2.0 针座 = 6.3mm 处
     var g = makeGroup(78.35, 52.35, BT / 2 + (HAS_REAL_BOARD ? 6.3 : 10.8));
     add(g, box(81.3, 54.7, 1.2, MAT.pcbDark), 0, 0, 0.6);
@@ -2765,13 +2765,13 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     add(g, box(0.8, 0.8, 0.16, MAT.gold), 29.2, 18, -1.18);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 20, -0.55);
     add(g, box(1.4, 1.0, 0.5, MAT.ceramic), -30, 15, -0.55);
-    // 屏幕右侧 1×8P 排针（2.0mm 间距，插入 U3 矮排母）
+    // 屏幕右侧 1×9P 排针（2.0mm 间距，插入 U3 矮排母）
     var screenHeader = new THREE.Group();
-    add(screenHeader, box(2.0, 16.6, 2.0, MAT.black), 0, 0, -1.0);
-    for (var shi = 0; shi < 8; shi++) {
-      add(screenHeader, box(1.05, 1.05, 3.4, MAT.gold), 0, (shi - 3.5) * 2.0, -2.9);
+    add(screenHeader, box(2.0, 17.6, 2.0, MAT.black), 0, 0, -1.0);
+    for (var shi = 0; shi < 9; shi++) {
+      add(screenHeader, box(1.05, 1.05, 3.4, MAT.gold), 0, (shi - 4) * 2.0, -2.9);
     }
-    screenHeader.position.set(40.65, 0.02, 0);
+    screenHeader.position.set(40.55, 0.68, 0);
     g.add(screenHeader);
     register('screen', g, PARTS_META.screen);
   })();
@@ -2801,7 +2801,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   }
   (function () {
     var g = makeGroup(51, 9.5, BT / 2 + 10.8);
-    add(g, box(12, 15, 0.9, MAT.bluePcb), 0, 0, 0.45);
+    add(g, box(12, 15, 0.9, MAT.blackPcb), 0, 0, 0.45);
     // 陶瓷天线 + 接地环 + 馈电焊盘
     var ant = box(9.6, 9.6, 2.1, MAT.ceramic);
     add(g, ant, 0, 2.6, 0.9 + 1.05);
@@ -2910,6 +2910,12 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   (function () {
     var g = makeGroup(105.86, 89.46, BT / 2 + 0.4);
     add(g, box(34.28, 11.59, 1.0, MAT.blackPcb), 0, 0, 0.5);
+    // 两侧半孔焊盘
+    for (var ci = 0; ci < 6; ci++) {
+      var cx2 = -13.6 + ci * 5.44;
+      add(g, box(1.9, 1.5, 0.34, MAT.gold), cx2, -5.45, 0.5);
+      add(g, box(1.9, 1.5, 0.34, MAT.gold), cx2, 5.45, 0.5);
+    }
     // USB-C 接口：金属外壳 + 正面端口开口
     var usb = roundedPlate(6.2, 8.6, 2.9, 1.0, MAT.metal, 0.08);
     usb.position.set(15.3, 0, 2.1);
@@ -2926,22 +2932,38 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     // IP2312 无电量数码管，仅保留一颗充电状态灯
     var chgLed = new THREE.MeshStandardMaterial({ color: 0x10261a, emissive: 0x5ce0a6, emissiveIntensity: 1.5, roughness: 0.4 });
     add(g, box(1.4, 0.8, 0.4, chgLed), -8.6, 1.5, 1.05);
-    // 电感 / 芯片 / 电容
-    add(g, box(4.2, 4.2, 1.2, MAT.dark), 2.4, -1.2, 1.6);
-    var ind = cyl(2.0, 2.0, 2.2, 20, MAT.inductor);
-    add(g, ind, 7.5, 2.6, 2.1);
-    add(g, box(2.6, 2.6, 1.4, MAT.black), 11.6, -1.4, 1.7);
-    var cap = cyl(1.25, 1.25, 2.6, 16, MAT.ceramic);
-    add(g, cap, 13.8, 2.8, 2.3);
-    // 采样电阻 / 保险丝 / 热敏 / 滤波电容 / 状态灯
-    add(g, box(3.2, 2.0, 0.45, MAT.metal), -2.0, -1.6, 1.22);
-    add(g, box(2.4, 1.2, 0.6, MAT.white), 3.6, 3.8, 1.3);
-    add(g, box(1.0, 0.8, 0.4, MAT.black), 10.2, 3.8, 1.2);
-    add(g, cyl(1.0, 1.0, 1.2, 16, MAT.ceramic), 0.6, 2.6, 1.6);
-    add(g, cyl(1.0, 1.0, 1.2, 16, MAT.ceramic), 5.8, -2.8, 1.6);
-    add(g, cyl(1.0, 1.0, 1.2, 16, MAT.ceramic), 12.0, 1.4, 1.6);
-    var chLed = new THREE.MeshStandardMaterial({ color: 0x10261a, emissive: 0x5ce0a6, emissiveIntensity: 1.5, roughness: 0.4 });
-    add(g, box(0.9, 0.6, 0.4, chLed), 13.0, -3.6, 1.2);
+    // IP2312 主控（SOP-8）
+    add(g, box(3.8, 4.6, 1.0, MAT.dark), 6.4, -1.2, 1.5);
+    for (var li = 0; li < 4; li++) {
+      var ly = -2.55 + li * 0.9;
+      add(g, box(0.55, 0.34, 0.26, MAT.metal), 4.25, ly, 1.13);
+      add(g, box(0.55, 0.34, 0.26, MAT.metal), 8.55, ly, 1.13);
+    }
+    var icMark = labelPlane('IP2312', 2.8, 0.8, '#c9d3c9', 34);
+    icMark.position.set(6.4, -1.2, 2.02);
+    g.add(icMark);
+    // 功率电感（带屏蔽罩）
+    var ind = cyl(2.25, 2.25, 2.3, 22, MAT.inductor);
+    add(g, ind, 0.2, 2.5, 2.25);
+    add(g, cyl(2.0, 2.0, 0.14, 22, MAT.dark), 0.2, 2.5, 3.42);
+    // 输入 / 输出滤波电容
+    add(g, cyl(1.3, 1.3, 2.4, 16, MAT.ceramic), 10.4, 3.2, 2.2);
+    add(g, cyl(1.15, 1.15, 1.9, 16, MAT.ceramic), -4.8, 3.5, 1.95);
+    add(g, cyl(1.0, 1.0, 1.6, 16, MAT.ceramic), 9.0, -3.6, 1.8);
+    // 电流采样电阻 R010
+    add(g, box(3.4, 2.0, 0.5, MAT.metal), -3.4, -1.7, 1.25);
+    add(g, box(0.5, 2.2, 0.44, MAT.dark), -5.5, -1.7, 1.22);
+    add(g, box(0.5, 2.2, 0.44, MAT.dark), -1.3, -1.7, 1.22);
+    // 保险丝 / 热敏电阻 / 保护二极管
+    add(g, box(2.6, 1.4, 0.6, MAT.white), 11.3, -3.6, 1.3);
+    add(g, box(1.2, 1.0, 0.42, MAT.black), -6.8, 4.2, 1.2);
+    add(g, box(1.8, 1.2, 0.5, MAT.dark), 3.4, 4.1, 1.25);
+    // 贴片阻容阵列
+    [[-11.4, -0.6], [-9.9, -0.6], [-8.2, -2.8], [-6.6, -0.6], [-2.0, -0.6], [0.8, -3.7], [5.2, 2.7], [8.7, 3.3], [11.3, 1.4]].forEach(function (pp) {
+      add(g, box(0.95, 0.55, 0.34, MAT.black), pp[0], pp[1], 1.16);
+      add(g, box(0.24, 0.58, 0.36, MAT.metal), pp[0] - 0.58, pp[1], 1.16);
+      add(g, box(0.24, 0.58, 0.36, MAT.metal), pp[0] + 0.58, pp[1], 1.16);
+    });
     // 两个平贴大焊盘
     var padGeo = new THREE.CylinderGeometry(1.9, 1.9, 0.25, 24);
     padGeo.scale(1.25, 1, 0.62);
@@ -3209,7 +3231,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
       from: 0.10, to: 0.28, rail: '屏幕',
       chapter: '01 / 06 · DISPLAY',
       title: '第一层：ST7789',
-      lede: '屏幕横放在正面下半区，8P 矮排母在右侧。320×240、SPI 接口，背光常亮；先取下整块屏，底板与走线第一次露出来。',
+      lede: '屏幕横放在正面下半区，9P 矮排母在右侧。320×240、SPI 接口，背光常亮；先取下整块屏，底板与走线第一次露出来。',
       chips: ['ST7789 2.8"', '320×240', 'SPI'],
       kv: [['分辨率', '320×240'], ['接口', 'SPI'], ['供电', '3V3']],
       animate: ['screen'], focus: 'screen', tag: 'ST7789 · DISPLAY', tagOffset: [0, -100]
