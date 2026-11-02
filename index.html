@@ -1535,7 +1535,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
       spec: 'ESP-12F · 2×15P · 3.3V',
       desc: 'ESP8266 主控板，负责 NMEA 定位解析、I2C 传感采集、SPI 刷屏与 WiFi 联网。竖放，USB 口朝板下沿，双排 15P 排母固定。',
       kv: [['主控', 'ESP8266'], ['排母', '2 × 15P'], ['方向', 'USB 朝下'], ['逻辑', '3.3V']],
-      label: { dx: -142, dy: -44 }, anchorZ: 7, ez: 62, ex: -8, ey: -2, side: 'front'
+      label: { dx: -142, dy: -44 }, anchorZ: 7, ez: 62, ex: 0, ey: 0, side: 'front'
     },
     screen: {
       no: '02', name: 'ST7789 显示屏', short: '2.8" TFT', tag: 'DISPLAY',
@@ -1549,21 +1549,21 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
       spec: 'GPS + BDS · 5V · UART 5Hz',
       desc: '12×15mm 双模定位模块，装在板子最上沿，天线朝板外。UART 38400bps、5Hz 更新，TX / RX 与 ESP8266 交叉连接。',
       kv: [['模式', 'GPS + 北斗'], ['供电', '5V'], ['更新率', '5 Hz'], ['接口', 'UART']],
-      label: { dx: -150, dy: -34 }, anchorZ: 8, ez: 78, ex: -17, ey: 10, side: 'front'
+      label: { dx: -150, dy: -34 }, anchorZ: 8, ez: 78, ex: 0, ey: 0, side: 'front'
     },
     sensor: {
       no: '04', name: '温湿气压传感器', short: 'AHT20+BMP280', tag: 'SENSOR',
       spec: 'I²C · 3V3 · 15 × 15 mm',
       desc: 'AHT20 测温度与湿度，BMP280 测气压，二合一模块放在板顶，远离底部的充电与升压热源，减少温升带来的测量漂移。',
       kv: [['温度', 'AHT20'], ['气压', 'BMP280'], ['供电', '3V3'], ['接口', 'I²C']],
-      label: { dx: 138, dy: -36 }, anchorZ: 7, ez: 78, ex: 17, ey: 10, side: 'front'
+      label: { dx: 138, dy: -36 }, anchorZ: 7, ez: 78, ex: 0, ey: 0, side: 'front'
     },
     charger: {
       no: '05', name: '充电模块', short: 'IP2312', tag: 'CHARGE',
       spec: 'USB-C 5V → 4.2V · 3A',
       desc: '1S 纯充电模块，5V 输入、默认 3A。模块平贴焊在正面右下角两个大焊盘上，Type-C 从板边插入，不用杜邦线。',
       kv: [['输入', 'USB-C 5V'], ['充电', '3 A'], ['形式', '平贴焊'], ['保护', '模块内置']],
-      label: { dx: 88, dy: 58 }, anchorZ: 6, ez: 72, ex: 10, ey: -8, side: 'front'
+      label: { dx: 88, dy: 58 }, anchorZ: 6, ez: 72, ex: 0, ey: 0, side: 'front'
     },
     solar: {
       no: '06', name: '太阳能充电（实验性）', short: 'CN3791', tag: 'SOLAR · EXP',
@@ -3286,7 +3286,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   var STORY_FADE_IDS = { screen: 1, nodemcu: 1, gps: 1, sensor: 1, charger: 1 };
   var STORY_PART_OFFSETS = {
     // 导览模式下屏幕向右上方抬起，避开主控、传感器与右下角充电模块
-    screen: { ex: 50, ey: 40 }
+    screen: { ex: 0, ey: 0 }
   };
   STORY_STAGES.forEach(function (stage) {
     if (!stage.animate) return;
