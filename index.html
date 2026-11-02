@@ -2728,7 +2728,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   (function () {
     // U3 为 PM200V 系列矮排母：9P / 2.0mm 间距 / 高 4.3mm
     // 真实板体载入时屏幕底面落在 4.3 + 2.0 针座 = 6.3mm 处
-    var g = makeGroup(78.35, 70, BT / 2 + (HAS_REAL_BOARD ? 6.3 : 10.8));
+    var g = makeGroup(78.35, 80, BT / 2 + (HAS_REAL_BOARD ? 6.3 : 10.8));
     add(g, box(81.3, 54.7, 1.2, MAT.pcbDark), 0, 0, 0.6);
     add(g, box(81.3, 54.7, 3.4, MAT.display), 0, 0, 1.2 + 1.7);
     var face = new THREE.Mesh(new THREE.PlaneGeometry(81.3, 54.7), new THREE.MeshBasicMaterial({
