@@ -275,6 +275,13 @@ input[type=range].explode::-moz-range-thumb{width:13px;height:13px;border-radius
   transition:opacity .5s;line-height:2;
 }
 .stage-fallback.hide{opacity:0}
+.fb-inner{display:flex;flex-direction:column;align-items:center;gap:13px}
+.fb-title{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--dim)}
+.fb-row{display:flex;align-items:center;gap:9px}
+.fb-bar{position:relative;width:168px;height:2px;background:rgba(255,255,255,.13);border-radius:2px;overflow:hidden}
+.fb-bar i{display:block;height:100%;width:3%;background:linear-gradient(90deg,#9d7c45,#d8b878 45%,#f6e7c0);box-shadow:0 0 8px rgba(233,208,150,.5);transition:width .3s ease}
+.fb-pct{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:#d8c79a;font-weight:500;min-width:30px;text-align:left}
+.fb-note{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);line-height:1.9}
 
 /* sidebar */
 .sidebar{border-left:1px solid var(--line2);background:#0c0b0a;display:flex;flex-direction:column;min-height:0}
@@ -838,7 +845,7 @@ body.no-story-webgl .story-hint,body.no-story-webgl .story-tag,body.no-story-web
 
 </style>
 <noscript><style>.intro{display:none!important}body.intro-lock{overflow:auto!important}.reveal{opacity:1!important;transform:none!important;animation:none!important}</style></noscript>
-<script>window.__BOOT=(function(){var cur=3,real=3,t=null;function el(){var b=document.getElementById('bootbar');if(!b)return null;return b;}function apply(){var b=el();if(!b)return null;var i=b.firstChild;if(i)i.style.width=cur+'%';return b;}function tick(){var cap=Math.min(real+7,98);if(cur<cap){cur=Math.min(cap,cur+0.7);apply();}}return function(p){var b=apply();if(p>=100){cur=100;apply();if(b)b.classList.add('done');if(t){clearInterval(t);t=null;}return;}if(p>real){real=p;if(cur<p)cur=p;apply();}if(!t)t=setInterval(tick,110);};})();</script>
+<script>window.__BOOT=(function(){var cur=3,real=3,t=null;function paint(){var b=document.getElementById('bootbar');if(b&&b.firstChild)b.firstChild.style.width=cur+'%';var f=document.getElementById('fbBar');if(f)f.style.width=cur+'%';var p=document.getElementById('fbPct');if(p)p.textContent=Math.round(cur)+'%';}function tick(){var cap=Math.min(real+7,98);if(cur<cap){cur=Math.min(cap,cur+0.7);paint();}}return function(p){paint();if(p>=100){cur=100;paint();var b=document.getElementById('bootbar');if(b)b.classList.add('done');if(t){clearInterval(t);t=null;}return;}if(p>real){real=p;if(cur<p)cur=p;paint();}if(!t)t=setInterval(tick,110);};})();</script>
 <style>
 /* 首屏下载进度条 */
 #bootbar{position:fixed;left:0;top:0;width:100%;height:3px;z-index:9999;background:rgba(255,255,255,.07);pointer-events:none;opacity:1;transition:opacity .5s ease}
@@ -1089,7 +1096,16 @@ body.no-story-webgl .story-hint,body.no-story-webgl .story-tag,body.no-story-web
         </label>
         <div class="viewer-hint"><kbd>拖拽</kbd> 旋转 &nbsp; <kbd>滚轮</kbd> 缩放 &nbsp; <kbd>点击</kbd> 查看部件 &nbsp; · &nbsp; 背面藏电池</div>
       </div>
-      <div class="stage-fallback" id="fallback">INITIALIZING 3D SCENE<br><span>正在加载本地 WebGL 渲染器…</span></div>
+      <div class="stage-fallback" id="fallback">
+        <div class="fb-inner">
+          <div class="fb-title" id="fbTitle">INITIALIZING 3D SCENE</div>
+          <div class="fb-row">
+            <div class="fb-bar"><i id="fbBar"></i></div>
+            <b class="fb-pct" id="fbPct">0%</b>
+          </div>
+          <div class="fb-note" id="fbNote">正在加载本地 WebGL 渲染器…</div>
+        </div>
+      </div>
       <div class="asset-prog" id="assetProg"><span>真实板卡模型</span><b id="assetProgVal">0%</b><u><i id="assetProgBar"></i></u></div>
     </div>
 
@@ -1488,8 +1504,19 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     if (done) setTimeout(function () { assetProg.classList.remove('on'); }, 700);
   }
 
+  function setFallback(title, note, hideBar) {
+    var t = document.getElementById('fbTitle');
+    var n = document.getElementById('fbNote');
+    if (t && title) t.textContent = title;
+    if (n && note) n.innerHTML = note;
+    if (hideBar) {
+      var row = document.querySelector('.fb-row');
+      if (row) row.style.display = 'none';
+    }
+  }
+
   if (!window.THREE) {
-    fallback.innerHTML = '3D RENDERER MISSING<br><span>three.js 未能加载</span>';
+    setFallback('3D RENDERER MISSING', 'three.js 未能加载', true);
     if (bootbar) bootbar.classList.add('done');
     return;
   }
@@ -1621,7 +1648,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     maxAniso = renderer.capabilities.getMaxAnisotropy();
   } catch (err) {
     document.body.classList.add('no-webgl');
-    fallback.innerHTML = '3D UNAVAILABLE<br><span>' + (err && err.message ? err.message : 'WebGL 初始化失败') + '</span>';
+    setFallback('3D UNAVAILABLE', (err && err.message ? err.message : 'WebGL 初始化失败'), true);
     var revealAll = document.querySelectorAll('.reveal');
     for (var ri = 0; ri < revealAll.length; ri++) revealAll[ri].classList.add('in');
     var sf = document.getElementById('storyFallback');
@@ -3975,7 +4002,7 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
   // 首屏较慢时给个明确提示，避免看起来"卡死"
   setTimeout(function () {
     if (fallback && !fallback.classList.contains('hide')) {
-      fallback.innerHTML = 'INITIALIZING 3D SCENE<br><span>正在加载本地 WebGL 渲染器…<br>首次加载约 5–15 秒，请稍候</span>';
+      setFallback('INITIALIZING 3D SCENE', '正在加载本地 WebGL 渲染器…<br>首次加载约 5–15 秒，请稍候');
     }
   }, 7000);
 
