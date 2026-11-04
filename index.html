@@ -1997,18 +1997,26 @@ window.__REAL_OBJ_URL__ = "board.obj.gz";
     sw.position.set(MX(4), MY(78), BT / 2);
     handBoard.add(sw);
   })();
-  // R1 / R2 分压电阻
-  [[6, 32], [6, 36]].forEach(function (p) {
-    var r = box(2.6, 1.3, 0.7, MAT.black);
-    r.position.set(MX(p[0]), MY(p[1]), BT / 2 + 0.35);
-    handBoard.add(r);
-    var cap = box(0.7, 1.0, 0.25, MAT.ceramic);
-    cap.position.set(MX(p[0]) - 1.05, MY(p[1]), BT / 2 + 0.72);
-    handBoard.add(cap);
-    var cap2 = cap.clone();
-    cap2.position.x = MX(p[0]) + 1.05;
-    handBoard.add(cap2);
+  // R1 / R2 分压电阻：按底板丝印位（8.2, 33.45）与（8.2, 37.4）摆放，两端金属电极
+  [[8.2, 33.45], [8.2, 37.4]].forEach(function (p) {
+    var rg = new THREE.Group();
+    add(rg, box(2.0, 1.0, 0.5, MAT.dark), 0, 0, 0.25);
+    add(rg, box(0.5, 1.0, 0.52, MAT.metal), -0.75, 0, 0.26);
+    add(rg, box(0.5, 1.0, 0.52, MAT.metal), 0.75, 0, 0.26);
+    rg.position.set(MX(p[0]), MY(p[1]), BT / 2);
+    boardGroup.add(rg);
   });
+  // Q1 XB7608A 电池保护 MOS：按底板丝印中心（95.5, 99.25）摆放，SOT-23 竖放
+  (function () {
+    var q = new THREE.Group();
+    add(q, box(1.5, 2.9, 0.9, MAT.dark), 0, 0, 0.45);
+    [-1.0, 0, 1.0].forEach(function (dy) {
+      add(q, box(0.45, 0.5, 0.18, MAT.metal), -0.95, dy, 0.09);
+      add(q, box(0.45, 0.5, 0.18, MAT.metal), 0.95, dy, 0.09);
+    });
+    q.position.set(MX(95.5), MY(99.25), BT / 2);
+    boardGroup.add(q);
+  })();
 
   /* ------------------------- 真实 PCB（EasyEDA OBJ） ------------------------- */
   // 颜色由同目录 3D_PCB1_2026-11-02.mtl 的 Kd / Ks 推导；板体单独用白色阻焊材质。
